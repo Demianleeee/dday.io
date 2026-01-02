@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-Day Widget</title>
+    <style>
+        /* 변수 설정: 기본은 라이트 모드 색상 */
+        :root {
+            --text-color: #000000; /* 검정색 */
+        }
+
+        /* 다크 모드 감지 시 색상 변경 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-color: #FFFFFF; /* 흰색 */
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent; /* 배경 투명 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        #d-day-container {
+            font-size: 60px;
+            font-weight: 800;
+            line-height: 1;
+            text-align: center;
+            
+            /* 여기에 색상 변수 적용 */
+            color: var(--text-color);
+            
+            /* 색상이 바뀔 때 0.3초 동안 부드럽게 변함 */
+            transition: color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="d-day-container">계산 중...</div>
+
+    <script>
+        // ==========================================
+        // ▼ 기준 날짜 수정 (YYYY-MM-DD)
+        const startDateString = "2023-01-01"; 
+        // ==========================================
+
+        function calculateDDay() {
+            const today = new Date();
+            const startDate = new Date(startDateString);
+
+            today.setHours(0, 0, 0, 0);
+            startDate.setHours(0, 0, 0, 0);
+
+            const timeDiff = today - startDate;
+            const dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+            const container = document.getElementById("d-day-container");
+
+            if (dayDiff >= 0) {
+                // 과거 날짜로부터 경과일 (D+OO)
+                container.innerText = "D+" + dayDiff; 
+            } else {
+                // 미래 날짜까지 남은 일 (D-OO)
+                container.innerText = "D" + dayDiff;
+            }
+        }
+
+        calculateDDay();
+        setInterval(calculateDDay, 60000);
+    </script>
+</body>
+</html>
